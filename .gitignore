@@ -82,3 +82,15 @@ pfsense-*
 
 # Documentation (operational docs only)
 docs/
+
+# Internal documentation files (keep local only)
+CORE_MODULES_DOCUMENTATION.md
+DEPLOYMENT.md
+DEPLOYMENT_TIMEZONE_MIGRATION.md
+memkREADME.md
+MINOR_FIXES_APPLIED.md
+RATE_LIMITING.md
+README.old.md
+SUDOERS_SETUP.md
+TIMEZONE_AUDIT_REPORT.md
+TIMEZONE_MIGRATION.md
