@@ -180,8 +180,11 @@ export async function GET(request: NextRequest) {
       }
     };
 
-    // Recent activities - last 5 events
+    // Recent activities - last 5 events (only paid payments)
     const recentPayments = await prisma.payment.findMany({
+      where: {
+        status: "paid",  // Only show paid payments
+      },
       take: 3,
       orderBy: {
         paidAt: "desc",
@@ -227,11 +230,11 @@ export async function GET(request: NextRequest) {
       ...recentPayments.map((payment) => ({
         id: payment.id,
         user:
-          payment.invoice.user?.username ||
-          payment.invoice.customerUsername ||
+          payment.invoice?.user?.username ||
+          payment.invoice?.customerUsername ||
           "Unknown",
         action: "Payment received",
-        time: payment.paidAt.toISOString(),
+        time: payment.paidAt?.toISOString() || new Date().toISOString(),
         status: "success" as const,
       })),
       ...recentInvoices.map((invoice) => ({
