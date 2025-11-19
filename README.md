@@ -1,4 +1,4 @@
-# AIBILL RADIUS - Sistem Billing untuk ISP RTRW.NET# AIBILL RADIUS - Sistem Billing untuk RTRW.NET
+# OLT RADIUS - Sistem Billing untuk ISP RTRW.NET# OLT RADIUS - Sistem Billing untuk RTRW.NET
 
 ## ⚙️ Auto Install Ubuntu 22
 
@@ -39,22 +39,22 @@ sudo bash scripts/install-ubuntu22.sh --all \
 
 ```bash
 sudo bash scripts/install-ubuntu22.sh --backup-cron \
-  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+  --db-name olt_radius --db-user olt --db-pass 'StrongPass123'
 ```
 
 - Ubah retensi hari:
 
 ```bash
 sudo bash scripts/install-ubuntu22.sh --backup-cron --backup-retain-days 7 \
-  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+  --db-name olt_radius --db-user olt --db-pass 'StrongPass123'
 ```
 
 - Log: `
-/var/log/aibill-db-backup.log
+/var/log/olt-db-backup.log
 `
 
 - File hasil: `
-/var/backups/aibill-radius/<db>_YYYY-MM-DD_HHMMSS.sql.gz
+/var/backups/olt-radius/<db>_YYYY-MM-DD_HHMMSS.sql.gz
 `
 
 ### Contoh `.env`
@@ -62,10 +62,10 @@ sudo bash scripts/install-ubuntu22.sh --backup-cron --backup-retain-days 7 \
 Gunakan format dari `.env.example` dan sesuaikan kredensial:
 
 ```env
-DATABASE_URL="mysql://aibill:YourStrongPass@localhost:3306/aibill_radius?connection_limit=10&pool_timeout=20"
+DATABASE_URL="mysql://olt:YourStrongPass@localhost:3306/olt_radius?connection_limit=10&pool_timeout=20"
 TZ="Asia/Jakarta"
 NEXT_PUBLIC_TIMEZONE="Asia/Jakarta"
-NEXT_PUBLIC_APP_NAME="AIBILL RADIUS"
+NEXT_PUBLIC_APP_NAME="OLT RADIUS"
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
 NEXTAUTH_SECRET=ubah-secret-anda
 NEXTAUTH_URL=https://yourdomain.com
@@ -86,13 +86,13 @@ Contoh:
 
 ```bash
 # Setup app + PM2 production (fork mode default)
-sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-fork --app-dir /opt/aibill-radius
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-fork --app-dir /opt/olt-radius
 
 # Cluster gunakan seluruh CPU (default)
-sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --app-dir /opt/aibill-radius
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --app-dir /opt/olt-radius
 
 # Cluster dengan 4 instance
-sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-instances 4 --app-dir /opt/aibill-radius
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-instances 4 --app-dir /opt/olt-radius
 
 # Otomatis clone repo saat `--app-dir` belum ada
 
@@ -101,10 +101,10 @@ Jika direktori aplikasi belum ada di server, gunakan opsi clone agar installer m
 ```bash
 sudo bash scripts/install-ubuntu22.sh \
   --node --mysql --app-setup --pm2-prod \
-  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123' \
+  --db-name olt_radius --db-user olt --db-pass 'StrongPass123' \
   --domain yourdomain.com --app-port 3000 --email admin@yourdomain.com \
-  --app-dir /opt/aibill-radius \
-  --app-git https://github.com/yourorg/AIBILL-RADIUS.git \
+  --app-dir /opt/olt-radius \
+  --app-git https://github.com/yourorg/OLT_RADIUS.git \
   --app-branch main
 ```
 
@@ -113,16 +113,16 @@ Catatan:
 - Jika `.env.example` tidak tersedia di repo, installer membuat `.env` minimal otomatis dengan `DATABASE_URL`, `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, dan `NEXTAUTH_SECRET`.
 
 # Nonaktifkan PM2 production (gunakan PM2 start sederhana)
-sudo bash scripts/install-ubuntu22.sh --app-setup --no-pm2-prod --app-dir /opt/aibill-radius
+sudo bash scripts/install-ubuntu22.sh --app-setup --no-pm2-prod --app-dir /opt/olt-radius
 ```
 
 Log PM2:
-- File: `/var/log/aibill-radius/out.log` dan `/var/log/aibill-radius/error.log`
-- Perintah: `pm2 logs aibill-radius --lines 100`
+- File: `/var/log/olt-radius/out.log` dan `/var/log/olt-radius/error.log`
+- Perintah: `pm2 logs olt-radius --lines 100`
 
 Operasional:
 - Status: `pm2 status`
-- Restart: `pm2 restart aibill-radius --update-env`
+- Restart: `pm2 restart olt-radius --update-env`
 - Simpan untuk autostart: `pm2 save`
 
 ### Catatan FreeRADIUS
@@ -136,11 +136,11 @@ Operasional:
 ```bash
 # Pasang FreeRADIUS + freeradius-mysql dan impor skema
 sudo bash scripts/install-ubuntu22.sh --freeradius --radius-import-schema \
-  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+  --db-name olt_radius --db-user olt --db-pass 'StrongPass123'
 
 # Setelah itu, aktifkan modul sql dan set kredensial MySQL
 sudo nano /etc/freeradius/mods-available/sql
-# Set driver = rlm_sql_mysql, db = aibill_radius, login = aibill, password = StrongPass123, server = localhost
+# Set driver = rlm_sql_mysql, db = olt_radius, login = olt, password = StrongPass123, server = localhost
 
 # Enable modul sql bila belum
 sudo ln -sf /etc/freeradius/mods-available/sql /etc/freeradius/mods-enabled/sql
