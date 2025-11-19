@@ -1,5 +1,155 @@
 # AIBILL RADIUS - Sistem Billing untuk ISP RTRW.NET# AIBILL RADIUS - Sistem Billing untuk RTRW.NET
 
+## ⚙️ Auto Install Ubuntu 22
+
+- Skrip installer tersedia di `scripts/install-ubuntu22.sh` untuk menyiapkan dependency utama di Ubuntu 22.x.
+- Komponen yang dapat dipasang: Node.js (18.x) + PNPM + PM2, MySQL 8, Nginx, Certbot, Redis, Docker, FreeRADIUS.
+
+### Cara Pakai Cepat
+
+```bash
+# Salin repo ke server (atau salin hanya skripnya)
+git clone <repo-anda> && cd <repo-anda>
+
+# Jalankan semua instalasi + buat database/user MySQL
+sudo bash scripts/install-ubuntu22.sh --all \
+  --db-name aibill_radius --db-user aibill --db-pass 'GantiPasswordKuat123' \
+  --domain yourdomain.com --app-port 3000 --email admin@yourdomain.com
+```
+
+### Opsi yang Tersedia
+
+- `--all` memasang semua komponen.
+- `--node` memasang Node.js LTS + PNPM + PM2.
+- `--pm2` mengaktifkan PM2 startup (systemd).
+- `--mysql` memasang MySQL 8 dan (opsional) membuat DB/user bila `--db-*` diisi.
+- `--nginx` memasang Nginx dan reverse proxy ke `127.0.0.1:<app-port>` untuk `--domain`.
+- `--ssl` mengaktifkan HTTPS via Certbot (butuh `--domain` dan `--email`).
+- `--redis`, `--docker`, `--freeradius` memasang masing-masing komponen.
+- `--db-name`, `--db-user`, `--db-pass` untuk membuat database dan user MySQL.
+- `--domain`, `--app-port` untuk Nginx reverse proxy (default `3000`).
+ - `--app-setup` otomatis setup aplikasi (generate `.env`, install deps, Prisma, build, PM2).
+ - `--app-dir DIR` lokasi kode aplikasi di server (default: direktori skrip).
+ - `--app-git URL` jika `DIR` belum ada, clone repo ke `DIR`.
+ - `--app-branch BRANCH` pilih branch saat clone (opsional).
+
+### Backup Otomatis MySQL
+
+- Aktifkan backup harian ke `/var/backups/aibill-radius` pukul `03:00` dengan retensi default `14` hari:
+
+```bash
+sudo bash scripts/install-ubuntu22.sh --backup-cron \
+  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+```
+
+- Ubah retensi hari:
+
+```bash
+sudo bash scripts/install-ubuntu22.sh --backup-cron --backup-retain-days 7 \
+  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+```
+
+- Log: `
+/var/log/aibill-db-backup.log
+`
+
+- File hasil: `
+/var/backups/aibill-radius/<db>_YYYY-MM-DD_HHMMSS.sql.gz
+`
+
+### Contoh `.env`
+
+Gunakan format dari `.env.example` dan sesuaikan kredensial:
+
+```env
+DATABASE_URL="mysql://aibill:YourStrongPass@localhost:3306/aibill_radius?connection_limit=10&pool_timeout=20"
+TZ="Asia/Jakarta"
+NEXT_PUBLIC_TIMEZONE="Asia/Jakarta"
+NEXT_PUBLIC_APP_NAME="AIBILL RADIUS"
+NEXT_PUBLIC_APP_URL="https://yourdomain.com"
+NEXTAUTH_SECRET=ubah-secret-anda
+NEXTAUTH_URL=https://yourdomain.com
+```
+
+### PM2 Production
+
+- Default: PM2 production aktif saat `--app-setup` dijalankan.
+- Jalankan aplikasi dengan PM2 mode production menggunakan ecosystem dan logrotate.
+- Opsi:
+  - `--pm2-prod` aktifkan konfigurasi production (default aktif).
+  - `--no-pm2-prod` nonaktifkan konfigurasi production (gunakan PM2 start sederhana).
+  - `--pm2-cluster` gunakan mode cluster (multi CPU, default aktif).
+  - `--pm2-fork` nonaktifkan cluster default (pakai mode fork).
+  - `--pm2-instances N|max` tentukan jumlah instance (default `max` saat cluster).
+
+Contoh:
+
+```bash
+# Setup app + PM2 production (fork mode default)
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-fork --app-dir /opt/aibill-radius
+
+# Cluster gunakan seluruh CPU (default)
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --app-dir /opt/aibill-radius
+
+# Cluster dengan 4 instance
+sudo bash scripts/install-ubuntu22.sh --app-setup --pm2-prod --pm2-instances 4 --app-dir /opt/aibill-radius
+
+# Otomatis clone repo saat `--app-dir` belum ada
+
+Jika direktori aplikasi belum ada di server, gunakan opsi clone agar installer menyalin kode secara otomatis:
+
+```bash
+sudo bash scripts/install-ubuntu22.sh \
+  --node --mysql --app-setup --pm2-prod \
+  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123' \
+  --domain yourdomain.com --app-port 3000 --email admin@yourdomain.com \
+  --app-dir /opt/aibill-radius \
+  --app-git https://github.com/yourorg/AIBILL-RADIUS.git \
+  --app-branch main
+```
+
+Catatan:
+- Installer memverifikasi `package.json` setelah clone. Jika tidak ditemukan, proses dihentikan dengan error.
+- Jika `.env.example` tidak tersedia di repo, installer membuat `.env` minimal otomatis dengan `DATABASE_URL`, `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, dan `NEXTAUTH_SECRET`.
+
+# Nonaktifkan PM2 production (gunakan PM2 start sederhana)
+sudo bash scripts/install-ubuntu22.sh --app-setup --no-pm2-prod --app-dir /opt/aibill-radius
+```
+
+Log PM2:
+- File: `/var/log/aibill-radius/out.log` dan `/var/log/aibill-radius/error.log`
+- Perintah: `pm2 logs aibill-radius --lines 100`
+
+Operasional:
+- Status: `pm2 status`
+- Restart: `pm2 restart aibill-radius --update-env`
+- Simpan untuk autostart: `pm2 save`
+
+### Catatan FreeRADIUS
+
+- Skrip hanya memasang paket `freeradius` dan `freeradius-mysql`.
+- Anda perlu mengaktifkan modul `sql` dan menyesuaikan `/etc/freeradius/mods-available/sql` agar FreeRADIUS terhubung ke MySQL aplikasi.
+- Pastikan skema tabel RADIUS kompatibel dengan definisi di `prisma/schema.prisma` (radacct, radcheck, radgroupreply, dll.).
+
+#### Integrasi FreeRADIUS ke MySQL aplikasi
+
+```bash
+# Pasang FreeRADIUS + freeradius-mysql dan impor skema
+sudo bash scripts/install-ubuntu22.sh --freeradius --radius-import-schema \
+  --db-name aibill_radius --db-user aibill --db-pass 'StrongPass123'
+
+# Setelah itu, aktifkan modul sql dan set kredensial MySQL
+sudo nano /etc/freeradius/mods-available/sql
+# Set driver = rlm_sql_mysql, db = aibill_radius, login = aibill, password = StrongPass123, server = localhost
+
+# Enable modul sql bila belum
+sudo ln -sf /etc/freeradius/mods-available/sql /etc/freeradius/mods-enabled/sql
+sudo systemctl restart freeradius
+
+# Dari aplikasi, Anda bisa trigger restart via API atau util
+# src/lib/freeradius.ts -> reloadFreeRadius()
+```
+
 
 
 Sistem billing modern dan lengkap untuk ISP RTRW.NET dengan penanganan timezone WIB (Waktu Indonesia Barat) yang tepat dan integrasi FreeRADIUS.Sistem billing modern dan lengkap untuk ISP RTRW.NET dengan penanganan timezone WIB (Waktu Indonesia Barat) yang tepat.
