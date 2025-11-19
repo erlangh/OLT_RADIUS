@@ -219,7 +219,7 @@ export default function VoucherTemplatesPage() {
   const previewHtml = renderVoucherTemplate(
     formData.htmlTemplate,
     sampleVouchers,
-    { currencyCode: 'Rp', companyName: 'AIBILL' }
+    { currencyCode: 'Rp', companyName: 'OLT RADIUS' }
   );
 
   return (

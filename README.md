@@ -13,7 +13,7 @@ git clone <repo-anda> && cd <repo-anda>
 
 # Jalankan semua instalasi + buat database/user MySQL
 sudo bash scripts/install-ubuntu22.sh --all \
-  --db-name aibill_radius --db-user aibill --db-pass 'GantiPasswordKuat123' \
+  --db-name olt_radius --db-user olt --db-pass 'GantiPasswordKuat123' \
   --domain yourdomain.com --app-port 3000 --email admin@yourdomain.com
 ```
 
@@ -35,7 +35,7 @@ sudo bash scripts/install-ubuntu22.sh --all \
 
 ### Backup Otomatis MySQL
 
-- Aktifkan backup harian ke `/var/backups/aibill-radius` pukul `03:00` dengan retensi default `14` hari:
+- Aktifkan backup harian ke `/var/backups/olt-radius` pukul `03:00` dengan retensi default `14` hari:
 
 ```bash
 sudo bash scripts/install-ubuntu22.sh --backup-cron \
@@ -312,11 +312,11 @@ await prisma.user.create({ data: { expiredAt: utcDate } });
 
 # Buat database dan user```
 
-CREATE DATABASE aibill_radius CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE olt_radius CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER 'aibill'@'localhost' IDENTIFIED BY 'AiBill2024Secure';## 🛠️ Setup Instructions
+CREATE USER 'olt'@'localhost' IDENTIFIED BY 'Olt2024Secure';## 🛠️ Setup Instructions
 
-GRANT ALL PRIVILEGES ON aibill_radius.* TO 'aibill'@'localhost';
+GRANT ALL PRIVILEGES ON olt_radius.* TO 'olt'@'localhost';
 
 FLUSH PRIVILEGES;### 1. Database Setup
 
@@ -328,7 +328,7 @@ EXIT;
 
 ### 3. Setup FreeRADIUSmysql -u root -p
 
-CREATE DATABASE aibill_radius;
+CREATE DATABASE olt_radius;
 
 #### 3.1 Konfigurasi MySQL untuk RADIUSexit;
 
@@ -344,7 +344,7 @@ sudo nano /etc/freeradius/3.0/mods-available/sql
 
 ```env
 
-Ubah konfigurasi berikut:DATABASE_URL="mysql://root:YOUR_PASSWORD@localhost:3306/aibill_radius?connection_limit=10&pool_timeout=20"
+Ubah konfigurasi berikut:DATABASE_URL="mysql://root:YOUR_PASSWORD@localhost:3306/olt_radius?connection_limit=10&pool_timeout=20"
 
 TZ="Asia/Jakarta"
 
@@ -362,11 +362,11 @@ sql {```
 
     port = 3306npm install
 
-    login = "aibill"npx prisma generate
+    login = "olt"npx prisma generate
 
-    password = "AiBill2024Secure"npx prisma db push
+    password = "Olt2024Secure"npx prisma db push
 
-    radius_db = "aibill_radius"```
+    radius_db = "olt_radius"```
 
 
 
@@ -458,7 +458,7 @@ post-auth {```bash
 
 ```# Start with PM2
 
-pm2 start npm --name "aibill-radius" -- start
+pm2 start npm --name "olt-radius" -- start
 
 #### 3.3 Restart FreeRADIUS
 
@@ -490,9 +490,9 @@ sudo systemctl enable freeradiussrc/
 
 # Clone project (ganti dengan URL repo Anda)│   │   ├── hotspot/        # Hotspot management
 
-git clone https://github.com/username/aibill-radius.git│   │   └── ...             # Other modules
+git clone https://github.com/username/olt-radius.git│   │   └── ...             # Other modules
 
-cd aibill-radius│   └── page.tsx            # Root (redirects to /admin)
+cd olt-radius│   └── page.tsx            # Root (redirects to /admin)
 
 ├── lib/
 
@@ -532,7 +532,7 @@ Sesuaikan konfigurasi di `.env`:
 
 # Database - MySQL with proper timezone handling- Environment variables for sensitive data
 
-DATABASE_URL="mysql://aibill:AiBill2024Secure@localhost:3306/aibill_radius?connection_limit=10&pool_timeout=20"- Password hashing with bcryptjs
+DATABASE_URL="mysql://olt:Olt2024Secure@localhost:3306/olt_radius?connection_limit=10&pool_timeout=20"- Password hashing with bcryptjs
 
 - SQL injection prevention via Prisma
 
@@ -546,7 +546,7 @@ NEXT_PUBLIC_TIMEZONE="Asia/Jakarta"## 📊 Database Models
 
 # App ConfigurationCore models included:
 
-NEXT_PUBLIC_APP_NAME="AIBILL RADIUS"- Users (Admin, Agent, User roles)
+NEXT_PUBLIC_APP_NAME="OLT RADIUS"- Users (Admin, Agent, User roles)
 
 NEXT_PUBLIC_APP_URL="https://billing.yourdomain.com"- PPPoE Users & Profiles
 
@@ -554,7 +554,7 @@ NEXT_PUBLIC_APP_URL="https://billing.yourdomain.com"- PPPoE Users & Profiles
 
 # NextAuth- Sessions (RADIUS accounting)
 
-NEXTAUTH_SECRET=aibill-radius-secret-change-in-production-ymQWx6HYvJ/ry9XsRBPkrPzvlCZ6HuNmPtJr/WRnZEw=- Invoices & Payments
+NEXTAUTH_SECRET=olt-radius-secret-change-in-production-ymQWx6HYvJ/ry9XsRBPkrPzvlCZ6HuNmPtJr/WRnZEw=- Invoices & Payments
 
 NEXTAUTH_URL=https://billing.yourdomain.com- Payment Gateways
 
@@ -620,7 +620,7 @@ Setelah seeding, Anda bisa login dengan:   echo $TZ
 
    console.log(getTimezoneInfo()); // Should show WIB info
 
-AIBILL dapat otomatis restart FreeRADIUS saat ada perubahan konfigurasi NAS/Router.   ```
+OLT RADIUS dapat otomatis restart FreeRADIUS saat ada perubahan konfigurasi NAS/Router.   ```
 
 
 
@@ -638,7 +638,7 @@ Tambahkan baris berikut (ganti `youruser` dengan username Linux Anda):## 📝 Li
 
 
 
-```Private - Proprietary software for AIBILL RADIUS
+```Private - Proprietary software for OLT RADIUS
 
 youruser ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart freeradius
 
@@ -672,7 +672,7 @@ Buka browser di [http://localhost:3000](http://localhost:3000)
 npm run build
 
 # Start dengan PM2
-pm2 start npm --name "aibill-radius" -- start
+pm2 start npm --name "olt-radius" -- start
 
 # Setup auto-start saat reboot
 pm2 startup
@@ -689,7 +689,7 @@ pm2 monit
 sudo apt install -y nginx
 
 # Buat konfigurasi
-sudo nano /etc/nginx/sites-available/aibill
+sudo nano /etc/nginx/sites-available/olt
 ```
 
 Isi dengan:
@@ -715,7 +715,8 @@ server {
 
 ```bash
 # Enable site
-sudo ln -s /etc/nginx/sites-available/aibill /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/olt /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/olt /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -735,7 +736,7 @@ sudo certbot --nginx -d billing.yourdomain.com
 ## 📁 Struktur Project
 
 ```
-aibill-radius/
+olt-radius/
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── admin/              # Admin panel routes
@@ -795,7 +796,7 @@ const isUserExpired = isExpired(user.expiredAt);
 
 ## 🔐 Sistem Permission
 
-AIBILL memiliki sistem permission lengkap:
+OLT RADIUS memiliki sistem permission lengkap:
 
 - **Admin**: Full access
 - **Agent**: Terbatas pada fitur reseller
@@ -849,7 +850,7 @@ npx prisma db pull
 radtest username password localhost 0 testing123
 
 # Check logs
-pm2 logs aibill-radius
+pm2 logs olt-radius
 ```
 
 ## 🐛 Troubleshooting
@@ -872,7 +873,7 @@ sudo systemctl stop freeradius
 sudo freeradius -X
 
 # Cek table NAS
-mysql -u aibill -p aibill_radius -e "SELECT * FROM nas"
+mysql -u olt -p olt_radius -e "SELECT * FROM nas"
 ```
 
 ### 3. Timezone issue
@@ -885,7 +886,7 @@ timedatectl
 sudo timedatectl set-timezone Asia/Jakarta
 
 # Restart aplikasi
-pm2 restart aibill-radius
+pm2 restart olt-radius
 ```
 
 ### 4. Permission denied saat restart FreeRADIUS

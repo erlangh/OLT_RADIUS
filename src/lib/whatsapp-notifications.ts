@@ -272,7 +272,7 @@ export async function sendPaymentSuccess(data: {
 }) {
   try {
     const company = await prisma.company.findFirst();
-    const companyName = company?.name || 'AI-BILL RADIUS';
+    const companyName = company?.name || 'OLT RADIUS';
     const companyPhone = company?.phone || '';
 
     // Get template from database
@@ -325,7 +325,7 @@ export async function sendVoucherPurchaseSuccess(data: {
 }) {
   try {
     const company = await prisma.company.findFirst();
-    const companyName = company?.name || 'AI-BILL RADIUS';
+    const companyName = company?.name || 'OLT RADIUS';
     const companyPhone = company?.phone || '';
 
     // Get template from database

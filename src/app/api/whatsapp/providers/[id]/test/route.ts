@@ -31,7 +31,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const testMessage = `🧪 *Test Message from AI-BILL*
+    const testMessage = `🧪 *Test Message from OLT RADIUS*
 
 This is a test message from WhatsApp Provider: *${provider.name}*
 
