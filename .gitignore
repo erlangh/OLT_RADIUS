@@ -57,7 +57,6 @@ notify-telegram.sh
 deploy-*.sh
 refactor-*.sh
 replace-*.sh
-scripts/
 freeradius/
 sql/
 
