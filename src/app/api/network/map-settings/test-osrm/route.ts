@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       const res = await fetch(testUrl, {
         signal: controller.signal,
         headers: {
-          'User-Agent': 'AIBill-Radius/1.0',
+          'User-Agent': 'OLT-Radius/1.0',
         },
       });
 

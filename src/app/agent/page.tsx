@@ -144,7 +144,7 @@ export default function AgentLoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
-          <p>By AIBILL RADIUS</p>
+          <p>By OLT RADIUS</p>
         </div>
       </div>
     </div>

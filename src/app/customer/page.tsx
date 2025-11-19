@@ -40,7 +40,7 @@ export default function CustomerDashboard() {
   const [editingWifi, setEditingWifi] = useState(false);
   const [wifiForm, setWifiForm] = useState({ ssid: '', password: '' });
   const [updatingWifi, setUpdatingWifi] = useState(false);
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('OLT RADIUS');
 
   useEffect(() => {
     loadCompanyName();

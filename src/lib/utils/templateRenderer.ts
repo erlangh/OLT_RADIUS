@@ -23,7 +23,7 @@ export function renderVoucherTemplate(
   context?: RenderContext
 ): string {
   const currencyCode = context?.currencyCode || 'IDR'
-  const companyName = context?.companyName || 'AIBILL'
+  const companyName = context?.companyName || 'OLT RADIUS'
 
   // Split template into header, body, footer
   const headerMatch = templateHtml.match(/\{include file="rad-template-header\.tpl"\}([\s\S]*?)\{foreach/)

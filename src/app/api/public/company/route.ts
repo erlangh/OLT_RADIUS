@@ -17,7 +17,7 @@ export async function GET() {
     return NextResponse.json(
       { 
         success: true, 
-        company: { name: 'AIBILL RADIUS', logo: null } 
+        company: { name: 'OLT RADIUS', logo: null } 
       }
     );
   }

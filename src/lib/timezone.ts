@@ -1,5 +1,5 @@
 /**
- * Timezone Utilities for AIBILL v2
+ * Timezone Utilities for OLT RADIUS v2
  * 
  * CRITICAL RULES:
  * 1. ALL dates in database are stored as UTC

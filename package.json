@@ -1,5 +1,5 @@
 {
-  "name": "aibill-radius",
+  "name": "olt-radius",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:push": "prisma db push && npm run db:fix-radius",
     "db:migrate": "prisma migrate dev && npm run db:fix-radius",
-    "db:fix-radius": "mysql -u root aibill_radius < prisma/migrations/fix_radacct_groupname/migration.sql"
+    "db:fix-radius": "mysql -u root olt_radius < prisma/migrations/fix_radacct_groupname/migration.sql"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

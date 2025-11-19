@@ -47,7 +47,7 @@ export async function createBackup(type: 'auto' | 'manual' = 'manual') {
   
   // Generate filename with timestamp
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T').join('_').slice(0, -5);
-  const filename = `aibill_backup_${timestamp}.sql`;
+  const filename = `olt_backup_${timestamp}.sql`;
   
   const backupDir = await ensureBackupDir();
   const filepath = path.join(backupDir, filename);

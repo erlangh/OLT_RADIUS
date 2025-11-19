@@ -70,7 +70,7 @@ export async function syncVoucherToRadius(voucherId: string) {
     const uniqueGroupName = `hotspot-${profileName}-${voucher.code}`
     
     // MikroTik profile name from groupProfile or use default
-    const mikrotikProfile = voucher.profile.groupProfile || 'AIBILL'
+    const mikrotikProfile = voucher.profile.groupProfile || 'OLT'
 
     // 1. Add to radcheck (password)
     await prisma.radcheck.upsert({

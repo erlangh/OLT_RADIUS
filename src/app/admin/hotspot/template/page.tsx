@@ -70,7 +70,7 @@ Password
 <table style="width: 100%; border-collapse: collapse;">
 <tr>
 <td style="background: #f0f0f0; text-align: center; padding: 6px 0; font-size: 11px; color: #333; border-top: 1px solid #e0e0e0;">
-AIBILL - {$_c['currency_code']}. {number_format($vs['total'], 0, ',', '.')}
+OLT RADIUS - {$_c['currency_code']}. {number_format($vs['total'], 0, ',', '.')}
 </td>
 </tr>
 </table>

@@ -23,8 +23,8 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       locale: 'id',
       company: {
-        name: 'AIBILL RADIUS',
-        email: 'admin@aibill.com',
+        name: 'OLT RADIUS',
+        email: 'admin@olt.com',
         phone: '+62 812-3456-7890',
         address: 'Jakarta, Indonesia',
         baseUrl: '',
@@ -37,7 +37,7 @@ export const useAppStore = create<AppState>()(
         })),
     }),
     {
-      name: 'aibill-settings',
+      name: 'olt-settings',
     }
   )
 );

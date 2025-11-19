@@ -338,7 +338,7 @@ export default function HotspotVoucherPage() {
 
     const rendered = renderVoucherTemplate(template.htmlTemplate, voucherData, {
       currencyCode: 'Rp',
-      companyName: 'AIBILL'
+      companyName: 'OLT RADIUS'
     })
 
     const printHtml = getPrintableHtml(rendered)

@@ -293,7 +293,7 @@ export default function RoutersPage() {
     const radiusServer = radiusServerIp || 'YOUR_RADIUS_SERVER_IP';
     const radiusSecret = (radiusScriptRouter as any).secret || 'secret123';
     
-    return `# AIBILL RADIUS Setup Script
+    return `# OLT RADIUS Setup Script
 # Router: ${radiusScriptRouter.name}
 # Generated: ${new Date().toLocaleString()}
 
@@ -305,7 +305,7 @@ export default function RoutersPage() {
   accounting-port=1813 \\
   timeout=2s \\
   service=ppp,hotspot,login \\
-  comment="AIBILL RADIUS Server"
+  comment="OLT RADIUS Server"
 
 # 2. Enable RADIUS for Hotspot profiles
 /ip hotspot profile set \\

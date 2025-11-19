@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         '=default-profile=vpn-profile',
         '=authentication=mschap2',
         '=use-ipsec=yes',
-        '=ipsec-secret=aibill-secret',
+  '=ipsec-secret=olt-secret',
       ]);
       results.l2tp = true;
     } catch (e) {

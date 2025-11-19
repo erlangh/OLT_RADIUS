@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     // Get company info
     const company = await prisma.company.findFirst()
-    const companyName = company?.name || 'AIBILL'
+    const companyName = company?.name || 'OLT RADIUS'
     const companyPhone = company?.phone || ''
 
     // Build voucher message

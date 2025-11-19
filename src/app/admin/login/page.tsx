@@ -12,7 +12,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('OLT RADIUS');
 
   // Load company name
   useEffect(() => {
@@ -149,7 +149,7 @@ function LoginForm() {
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-          By AIBILL RADIUS
+          By OLT RADIUS
         </p>
       </div>
     </div>

@@ -31,7 +31,7 @@ export async function POST(
 
     await conn.connect();
 
-    const comment = 'AIBILL RADIUS - Dont Delete';
+    const comment = 'OLT RADIUS - Dont Delete';
 
     try {
       // 1. Create IP Pool for isolir

@@ -399,7 +399,7 @@ export default function PaymentPage() {
             Secure payment powered by
           </p>
           <p className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            AIBILLRADIUS
+ OLTRADIUS
           </p>
         </div>
       </div>

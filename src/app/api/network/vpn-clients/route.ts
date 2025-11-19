@@ -78,7 +78,7 @@ export async function POST(request: Request) {
       `=service=any`,
       `=profile=vpn-profile`,
       `=remote-address=${vpnIp}`,
-      `=comment=AIBILL-${name}`,
+      `=comment=OLT-${name}`,
     ]);
 
     await conn.close();
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
         server: vpnServer.host,
         username,
         password,
-        ipsecSecret: 'aibill-secret',
+        ipsecSecret: 'olt-secret',
         vpnIp,
       },
     });

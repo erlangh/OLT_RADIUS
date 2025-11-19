@@ -12,7 +12,7 @@ export default function CustomerLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [expiresIn, setExpiresIn] = useState(5);
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('OLT RADIUS');
 
   useEffect(() => {
     fetch('/api/public/company')
@@ -244,7 +244,7 @@ export default function CustomerLoginPage() {
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-          By AIBILL RADIUS
+          By OLT RADIUS
         </p>
       </div>
     </div>

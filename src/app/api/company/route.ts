@@ -10,8 +10,8 @@ export async function GET() {
     if (!company) {
       // Return default if no company exists
       return NextResponse.json({
-        name: 'AIBILL RADIUS',
-        email: 'admin@aibill.com',
+        name: 'OLT RADIUS',
+        email: 'admin@olt.com',
         phone: '+62 812-3456-7890',
         address: 'Jakarta, Indonesia',
         baseUrl: 'http://localhost:3000',

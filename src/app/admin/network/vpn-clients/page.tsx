@@ -186,7 +186,7 @@ export default function VpnClientsPage() {
       server: vpnServer?.host || '',
       username: client.username,
       password: client.password,
-      ipsecSecret: 'aibill-secret',
+      ipsecSecret: 'olt-secret',
       vpnIp: client.vpnIp,
     });
     setShowCredentials(true);
@@ -231,10 +231,10 @@ export default function VpnClientsPage() {
   password=${credentials.password} \\
   ipsec-secret=${credentials.ipsecSecret} \\
   disabled=no \\
-  comment="AIBILL VPN"
+  comment="OLT VPN"
 
 # Add static route for VPN subnet
-/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="AIBILL VPN Route"`;
+/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="OLT VPN Route"`;
     } else if (selectedVpnType === 'sstp') {
       return `/interface sstp-client add \\
   connect-to=${credentials.server} \\
@@ -242,20 +242,20 @@ export default function VpnClientsPage() {
   password=${credentials.password} \\
   disabled=no \\
   verify-server-certificate=no \\
-  comment="AIBILL VPN"
+  comment="OLT VPN"
 
 # Add static route for VPN subnet
-/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="AIBILL VPN Route"`;
+/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="OLT VPN Route"`;
     } else if (selectedVpnType === 'pptp') {
       return `/interface pptp-client add \\
   connect-to=${credentials.server} \\
   user=${credentials.username} \\
   password=${credentials.password} \\
   disabled=no \\
-  comment="AIBILL VPN"
+  comment="OLT VPN"
 
 # Add static route for VPN subnet
-/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="AIBILL VPN Route"`;
+/ip route add dst-address=${subnetCidr} gateway=${gateway} comment="OLT VPN Route"`;
     }
 
     return '';
