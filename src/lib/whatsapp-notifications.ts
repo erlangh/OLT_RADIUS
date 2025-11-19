@@ -49,7 +49,7 @@ export async function sendRegistrationApproval(data: {
 }) {
   try {
     const company = await prisma.company.findFirst();
-    const companyName = company?.name || 'AI-BILL RADIUS';
+    const companyName = company?.name || 'OLT RADIUS';
     const companyPhone = company?.phone || '';
 
     // Get template from database
@@ -100,7 +100,7 @@ export async function sendInstallationInvoice(data: {
 }) {
   try {
     const company = await prisma.company.findFirst();
-    const companyName = company?.name || 'AI-BILL RADIUS';
+    const companyName = company?.name || 'OLT RADIUS';
     const companyPhone = company?.phone || '';
 
     const dueDateStr = data.dueDate.toLocaleDateString('id-ID', {
@@ -156,7 +156,7 @@ export async function sendAdminCreateUser(data: {
 }) {
   try {
     const company = await prisma.company.findFirst();
-    const companyName = company?.name || 'AI-BILL RADIUS';
+    const companyName = company?.name || 'OLT RADIUS';
     const companyPhone = company?.phone || '';
 
     // Get template from database
