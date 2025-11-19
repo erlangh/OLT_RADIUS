@@ -139,8 +139,25 @@ install_node() {
   if command -v corepack >/dev/null 2>&1; then
     run "${SUDO} corepack enable"
   fi
-  run "${SUDO} npm i -g pnpm pm2"
-  ok "Node.js $(node -v) terpasang; PNPM dan PM2 siap."
+  # Handle pnpm installation carefully to avoid EEXIST when binary already exists
+  if command -v pnpm >/dev/null 2>&1; then
+    ok "pnpm sudah terpasang ($(pnpm -v)); lewati instalasi pnpm."
+  else
+    # If corepack is available, prefer it for pnpm activation
+    if command -v corepack >/dev/null 2>&1; then
+      run "${SUDO} corepack prepare pnpm@latest --activate || true"
+    else
+      # Fallback to npm global install, but don't fail hard on EEXIST
+      if [[ -f /usr/local/bin/pnpm ]]; then
+        warn "/usr/local/bin/pnpm sudah ada; lewati instalasi pnpm untuk menghindari EEXIST."
+      else
+        run "${SUDO} npm i -g pnpm || true"
+      fi
+    fi
+  fi
+  # Ensure PM2 is installed
+  run "${SUDO} npm i -g pm2"
+  ok "Node.js $(node -v) terpasang; PM2 siap. pnpm dikelola oleh corepack atau sudah tersedia."
 }
 
 configure_pm2() {
